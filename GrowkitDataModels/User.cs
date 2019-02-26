@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GrowkitDataModels
@@ -7,7 +8,7 @@ namespace GrowkitDataModels
     public class User
     {
         /// <summary> The unique user identifying number.</summary>
-        [Key] public ulong UserId { get; set; }
+        [Key] public Guid UserId { get; set; }
         /// <summary> The name displayed to other users.</summary>
         public string Username { get; set; }
         /// <summary> The hub currently registered on this user.</summary>
