@@ -5,6 +5,7 @@ using GrowkitDataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Growkit_website.Data
 {
@@ -25,5 +26,44 @@ namespace Growkit_website.Data
         public DbSet<GKSensorStick> SensorSticks { get; set; }
         /// <summary> The dataset of all presets stored in the database.</summary>
         public DbSet<PlantPreset> Presets { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            var ulongConverter = new ValueConverter<ulong, long>(
+                v => (long)v,
+                v => (ulong)v);
+            var uintConverter = new ValueConverter<uint, int>(
+                v => (int)v,
+                v => (uint)v);
+
+            builder.Entity<PlantPreset>(table =>
+            {
+                table.Property("PresetId")
+                    .ValueGeneratedOnAdd()
+                    .HasConversion(uintConverter);
+            });
+
+            builder.Entity<Friends>(table =>
+            {
+                table.Property("RelationId")
+                    .ValueGeneratedOnAdd()
+                    .HasConversion(ulongConverter);
+            });
+
+            builder.Entity<GKSensorStick>(table =>
+            {
+                table.Property("SensorId")
+                    .HasConversion(ulongConverter);
+            });
+
+            builder.Entity<GKHub>(table =>
+            {
+                table.Property("IMSI")
+                    .HasConversion(ulongConverter);
+            });
+
+            base.OnModelCreating(builder);
+        }
     }
 }
