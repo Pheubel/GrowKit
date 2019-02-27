@@ -8,7 +8,7 @@ namespace GrowkitDataModels
         /// <summary> The unique identity of this preset.</summary>
         [Key] public uint PresetId { get; set; }
         /// <summary> The name for this preset.</summary>
-        public string Name { get; set; }
+        [Required] public string Name { get; set; }
         /// <summary> The estimated ammount of days until the user can expect their plant to have matured.</summary>
         public int EstimatedGrowthTime { get; set; }
         /// <summary> The ideal water level for this plant to grow in.</summary>
