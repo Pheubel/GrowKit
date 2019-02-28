@@ -17,7 +17,5 @@ namespace GrowkitDataModels
         public short OptimalLightLevel { get; set; }
         /// <summary> The ideal temperature level for this plant to grow in.</summary>
         public short OptimalTemperatureLevel { get; set; }
-        /// <summary> The ideal Ph level for this plant to grow in.</summary>
-        public short OptimalPhLevel { get; set; }
     }
 }
