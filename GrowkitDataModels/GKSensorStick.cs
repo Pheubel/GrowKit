@@ -17,7 +17,5 @@ namespace GrowkitDataModels
         public short LightLevel { get; set; }
         /// <summary> The latest temperature Level measured.</summary>
         public short TemperatureLevel { get; set; }
-        /// <summary> The latest Ph Level measured.</summary>
-        public short PhLevel { get; set; }
     }
 }
