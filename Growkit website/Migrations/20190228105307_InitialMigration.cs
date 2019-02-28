@@ -56,8 +56,7 @@ namespace Growkit_website.Migrations
                     EstimatedGrowthTime = table.Column<int>(nullable: false),
                     OptimalWaterLevel = table.Column<short>(nullable: false),
                     OptimalLightLevel = table.Column<short>(nullable: false),
-                    OptimalTemperatureLevel = table.Column<short>(nullable: false),
-                    OptimalPhLevel = table.Column<short>(nullable: false)
+                    OptimalTemperatureLevel = table.Column<short>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -223,8 +222,7 @@ namespace Growkit_website.Migrations
                     PlantName = table.Column<string>(nullable: true),
                     WaterLevel = table.Column<short>(nullable: false),
                     LightLevel = table.Column<short>(nullable: false),
-                    TemperatureLevel = table.Column<short>(nullable: false),
-                    PhLevel = table.Column<short>(nullable: false)
+                    TemperatureLevel = table.Column<short>(nullable: false)
                 },
                 constraints: table =>
                 {

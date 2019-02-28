@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Growkit_website.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190227231025_InitialMigration")]
+    [Migration("20190228105307_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,8 +114,6 @@ namespace Growkit_website.Migrations
 
                     b.Property<short>("LightLevel");
 
-                    b.Property<short>("PhLevel");
-
                     b.Property<string>("PlantName");
 
                     b.Property<short>("TemperatureLevel");
@@ -140,8 +138,6 @@ namespace Growkit_website.Migrations
                         .IsRequired();
 
                     b.Property<short>("OptimalLightLevel");
-
-                    b.Property<short>("OptimalPhLevel");
 
                     b.Property<short>("OptimalTemperatureLevel");
 

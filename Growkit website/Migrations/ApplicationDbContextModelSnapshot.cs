@@ -112,8 +112,6 @@ namespace Growkit_website.Migrations
 
                     b.Property<short>("LightLevel");
 
-                    b.Property<short>("PhLevel");
-
                     b.Property<string>("PlantName");
 
                     b.Property<short>("TemperatureLevel");
@@ -138,8 +136,6 @@ namespace Growkit_website.Migrations
                         .IsRequired();
 
                     b.Property<short>("OptimalLightLevel");
-
-                    b.Property<short>("OptimalPhLevel");
 
                     b.Property<short>("OptimalTemperatureLevel");
 
