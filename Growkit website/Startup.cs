@@ -14,6 +14,8 @@ using Growkit_website.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using GrowkitDataModels;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Growkit_website.ServerScripts;
 
 namespace Growkit_website
 {
@@ -42,6 +44,8 @@ namespace Growkit_website
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient<IEmailSender,EmailService>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

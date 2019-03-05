@@ -45,7 +45,7 @@ namespace Growkit_website.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
         {
-            // Ensure the user has gone through the username & password screen first
+            // Ensure the user has gone through the username & password screSen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 
             if (user == null)
