@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace Growkit_website.ServerScripts
 {
+    /// <summary> A service responsible for sending email messages.</summary>
     public class EmailService : IEmailService
     {
         readonly MailProviderSettings _mailSettings;
@@ -18,18 +15,23 @@ namespace Growkit_website.ServerScripts
             _mailSettings = mailSettings.Value;
         }
 
+        /// <summary> The email adress of the sender.</summary>
         public string SenderAdress => _mailSettings.SenderAdress;
+        /// <summary> The server hosting the email service.</summary>
         public string Host => _mailSettings.Host;
+        /// <summary> The port configured on the server for sending email messages.</summary>
         public int Port => _mailSettings.Port;
+        /// <summary> Specifies if the Secule Socket Layer (SSL) will be used.</summary>
         public bool EnableSsl => _mailSettings.EnableSsl;
 
-
-
-        
-
-        public async Task SendEmailAsync(string email, string subject, string Message, bool isHtml = false)
+        /// <summary> Sends an email to to the destined adress.</summary>
+        /// <param name="email"> The adress of the reciever.</param>
+        /// <param name="subject"> The subject of the email message.</param>
+        /// <param name="message"> The message that will be sent in the email.</param>
+        /// <param name="isHtml"> Specifies if the message body utilizes HTML.</param>
+        public async Task SendEmailAsync(string email, string subject, string message, bool isHtml = false)
         {
-
+            // Create a new client responsible for sending the mail message.
             var smtpClient = new SmtpClient()
             {
                 Host = _mailSettings.Host,
@@ -38,19 +40,15 @@ namespace Growkit_website.ServerScripts
                 Credentials = new NetworkCredential(_mailSettings.Username, _mailSettings.Password)
             };
 
-            using (var message = new MailMessage(_mailSettings.SenderAdress, email, subject, Message)
+            // Construct the message
+            using (var mailMessage = new MailMessage(_mailSettings.SenderAdress, email, subject, message)
             {
                 IsBodyHtml = isHtml,
             })
             {
-                await smtpClient.SendMailAsync(message);
+                await smtpClient.SendMailAsync(mailMessage);
             }
 
-        }
-
-        public Task SendEmailAsync(string email, string subject, string Message)
-        {
-            throw new NotImplementedException();
         }
     }
 }
