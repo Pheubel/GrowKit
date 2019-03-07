@@ -38,6 +38,8 @@ namespace Growkit_website
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<MailProviderSettings>(Configuration.GetSection("MailProviderSettings"));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -45,7 +47,7 @@ namespace Growkit_website
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddTransient<IEmailSender,EmailService>();
+            services.AddTransient<IEmailService, EmailService>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
