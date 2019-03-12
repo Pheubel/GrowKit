@@ -6,16 +6,16 @@ namespace GrowkitDataModels
     public class GKSensorStick
     {
         /// <summary> The unique identity of the sensor stick.</summary>
-        [Key] public ulong SensorId { get; set; }
+        [Key] public long SensorId { get; set; }
         /// <summary> The linked hub responsible for this sensor stick.</summary>
         public virtual GKHub ConnectedHub { get; set; }
         /// <summary> The name given to the plant.</summary>
         public string PlantName { get; set; }
         /// <summary> The latest water Level measured.</summary>
-        public short WaterLevel { get; set; }
+        public ushort WaterLevel { get; set; }
         /// <summary> The latest light Level measured.</summary>
-        public short LightLevel { get; set; }
+        public ushort LightLevel { get; set; }
         /// <summary> The latest temperature Level measured.</summary>
-        public short TemperatureLevel { get; set; }
+        public ushort TemperatureLevel { get; set; }
     }
 }

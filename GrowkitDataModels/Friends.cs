@@ -10,7 +10,7 @@ namespace GrowkitDataModels
     public class Friends
     {
         /// <summary> The unique identity of this relation.</summary>
-        [Key] public ulong RelationId { get; set; }
+        [Key] public long RelationId { get; set; }
         /// <summary> Determines if the friend request has been accepted by the other user.</summary>
         public bool IsConfirmed { get; set; }
         /// <summary> The Id of the user that sent the friend request.</summary>

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Growkit_website.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +51,8 @@ namespace Growkit_website.Migrations
                 name: "Presets",
                 columns: table => new
                 {
-                    PresetId = table.Column<int>(nullable: false),
+                    PresetId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: false),
                     EstimatedGrowthTime = table.Column<int>(nullable: false),
                     OptimalWaterLevel = table.Column<short>(nullable: false),
@@ -173,7 +174,8 @@ namespace Growkit_website.Migrations
                 name: "FriendRelations",
                 columns: table => new
                 {
-                    RelationId = table.Column<long>(nullable: false),
+                    RelationId = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     IsConfirmed = table.Column<bool>(nullable: false),
                     RequestSenderId = table.Column<Guid>(nullable: false),
                     RequestRecieverId = table.Column<Guid>(nullable: false)
@@ -217,7 +219,8 @@ namespace Growkit_website.Migrations
                 name: "SensorSticks",
                 columns: table => new
                 {
-                    SensorId = table.Column<long>(nullable: false),
+                    SensorId = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ConnectedHubIMSI = table.Column<long>(nullable: true),
                     PlantName = table.Column<string>(nullable: true),
                     WaterLevel = table.Column<short>(nullable: false),

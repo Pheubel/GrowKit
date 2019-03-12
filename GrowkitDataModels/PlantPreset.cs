@@ -6,16 +6,16 @@ namespace GrowkitDataModels
     public class PlantPreset
     {
         /// <summary> The unique identity of this preset.</summary>
-        [Key] public uint PresetId { get; set; }
+        [Key] public int PresetId { get; set; }
         /// <summary> The name for this preset.</summary>
         [Required] public string Name { get; set; }
         /// <summary> The estimated ammount of days until the user can expect their plant to have matured.</summary>
         public int EstimatedGrowthTime { get; set; }
         /// <summary> The ideal water level for this plant to grow in.</summary>
-        public short OptimalWaterLevel { get; set; }
+        public ushort OptimalWaterLevel { get; set; }
         /// <summary> The ideal light level for this plant to grow in.</summary>
-        public short OptimalLightLevel { get; set; }
+        public ushort OptimalLightLevel { get; set; }
         /// <summary> The ideal temperature level for this plant to grow in.</summary>
-        public short OptimalTemperatureLevel { get; set; }
+        public ushort OptimalTemperatureLevel { get; set; }
     }
 }

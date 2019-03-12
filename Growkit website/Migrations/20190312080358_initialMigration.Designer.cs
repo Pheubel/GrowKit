@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Growkit_website.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190228105307_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20190312080358_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

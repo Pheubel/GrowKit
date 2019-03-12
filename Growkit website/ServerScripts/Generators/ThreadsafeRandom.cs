@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Growkit_website.ServerScripts
+namespace Growkit_website.ServerScripts.Generators
 {
     /// <summary> Represents a pseudo-random number generator, which is a device that produces
     /// a sequence of numbers that meet certain statistical requirements for randomness.</summary>
@@ -74,6 +74,29 @@ namespace Growkit_website.ServerScripts
         public static double NextDouble(double minValue, double maxValue) => minValue > maxValue ?
             throw new ArgumentOutOfRangeException() :
             (maxValue - minValue) * _random.Value.NextDouble() + minValue;
+
+        private static ushort _longIdWheel = 0;
+        private static object _longIdLock = new object();
+        private static readonly DateTime _epoch = new DateTime(2019, 3, 1);
+        public static ulong GenerateUlongId()
+        {
+            long id;
+
+            lock (_longIdLock)
+            {
+                id = _longIdWheel++;
+            }
+
+            byte[] randomBytes = new byte[2];
+            NextBytes(randomBytes);
+
+            id |= (long)randomBytes[0] << 16;
+            id |= (long)randomBytes[0] << 24;
+
+            id = ((DateTime.UtcNow - _epoch).Ticks / TimeSpan.TicksPerMillisecond) << 32;
+
+            return (ulong)id;
+        }
 
         /// <summary> Returns a guaranteed unique 128-bit ID based on the current time, thread, randomness and operation on this tick. </summary>
         /// <returns> A random 128-bit ID based on the current time, thread randomness and operation on this tick.</returns>

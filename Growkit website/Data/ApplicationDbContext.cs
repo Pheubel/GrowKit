@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Growkit_website.ServerScripts.Generators;
 using GrowkitDataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -33,28 +36,51 @@ namespace Growkit_website.Data
             var ulongConverter = new ValueConverter<ulong, long>(
                 v => (long)v,
                 v => (ulong)v);
-            var uintConverter = new ValueConverter<uint, int>(
-                v => (int)v,
-                v => (uint)v);
+            var ushortConverter = new ValueConverter<ushort, short>(
+                v => (short)v,
+                v => (ushort)v);
+
+            builder.Entity<ApplicationUser>(table => 
+            {
+                table.Property(p => p.Id)
+                    .HasValueGenerator(typeof(GUIDGenerator))
+                    .ValueGeneratedOnAdd();
+            });
 
             builder.Entity<PlantPreset>(table =>
             {
                 table.Property("PresetId")
-                    .ValueGeneratedOnAdd()
-                    .HasConversion(uintConverter);
+                    .ValueGeneratedOnAdd();
+
+                table.Property(p => p.OptimalLightLevel)
+                    .HasConversion(ushortConverter);
+
+                table.Property(p => p.OptimalTemperatureLevel)
+                    .HasConversion(ushortConverter);
+
+                table.Property(p => p.OptimalWaterLevel)
+                    .HasConversion(ushortConverter);
             });
 
             builder.Entity<Friends>(table =>
             {
                 table.Property("RelationId")
-                    .ValueGeneratedOnAdd()
-                    .HasConversion(ulongConverter);
+                    .ValueGeneratedOnAdd();
             });
 
             builder.Entity<GKSensorStick>(table =>
             {
                 table.Property("SensorId")
-                    .HasConversion(ulongConverter);
+                    .ValueGeneratedOnAdd();
+
+                table.Property(p => p.LightLevel)
+                    .HasConversion(ushortConverter);
+
+                table.Property(p => p.TemperatureLevel)
+                    .HasConversion(ushortConverter);
+
+                table.Property(p => p.WaterLevel)
+                    .HasConversion(ushortConverter);
             });
 
             builder.Entity<GKHub>(table =>
