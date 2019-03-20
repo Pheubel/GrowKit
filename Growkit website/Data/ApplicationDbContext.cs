@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Growkit_website.ServerScripts.Constants;
 
 namespace Growkit_website.Data
 {
@@ -40,7 +41,18 @@ namespace Growkit_website.Data
                 v => (short)v,
                 v => (ushort)v);
 
-            builder.Entity<ApplicationUser>(table => 
+            builder.Entity<IdentityRole<Guid>>(table =>
+            {
+                table.Property(p => p.Id)
+                    .HasValueGenerator(typeof(GUIDGenerator));
+
+                table.HasData(new IdentityRole<Guid>[]{
+                    new IdentityRole<Guid>(RoleConstants.Administrator){ Id = ThreadsafeRandom.GenerateGuid()},
+                    new IdentityRole<Guid>(RoleConstants.User){ Id = ThreadsafeRandom.GenerateGuid()}
+                });
+            });
+
+            builder.Entity<ApplicationUser>(table =>
             {
                 table.Property(p => p.Id)
                     .HasValueGenerator(typeof(GUIDGenerator))

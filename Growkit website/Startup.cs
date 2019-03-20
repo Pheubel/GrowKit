@@ -16,6 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 using GrowkitDataModels;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Growkit_website.ServerScripts;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Growkit_website
 {
@@ -39,6 +42,41 @@ namespace Growkit_website
             });
 
             services.Configure<MailProviderSettings>(Configuration.GetSection("MailProviderSettings"));
+
+            // configure strongly typed settings objects
+            var TokenOptionSection = Configuration.GetSection("TokenProviderOptions");
+            services.Configure<TokenProviderOptions>(TokenOptionSection);
+
+            // configure jwt authentication
+            var TokenOptions = TokenOptionSection.Get<TokenProviderOptions>();
+
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenOptions.Secret));
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                RequireExpirationTime = true,
+                RequireSignedTokens = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = TokenOptions.Issuer,
+                ValidateAudience = true,
+                ValidAudience = TokenOptions.Audience,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromMinutes(2)
+            };
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Audience = TokenOptions.Audience;
+                options.ClaimsIssuer = TokenOptions.Issuer;
+                options.TokenValidationParameters = tokenValidationParameters;
+                options.SaveToken = true;
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(

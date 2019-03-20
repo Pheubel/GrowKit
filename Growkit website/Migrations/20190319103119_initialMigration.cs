@@ -238,6 +238,15 @@ namespace Growkit_website.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("01000000-0000-eab9-08d6-ac560613d807"), "89b687ba-b3e0-40e0-935f-fb0dc3bd16ba", "Administrator", null },
+                    { new Guid("01000000-0100-3bd1-08d6-ac560613dc50"), "3985c4bc-a9fb-468f-b4b0-e6d03d36a39e", "User", null }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

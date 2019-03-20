@@ -167,6 +167,20 @@ namespace Growkit_website.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("01000000-0000-eab9-08d6-ac560613d807"),
+                            ConcurrencyStamp = "89b687ba-b3e0-40e0-935f-fb0dc3bd16ba",
+                            Name = "Administrator"
+                        },
+                        new
+                        {
+                            Id = new Guid("01000000-0100-3bd1-08d6-ac560613dc50"),
+                            ConcurrencyStamp = "3985c4bc-a9fb-468f-b4b0-e6d03d36a39e",
+                            Name = "User"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
