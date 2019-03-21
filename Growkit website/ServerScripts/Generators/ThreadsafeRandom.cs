@@ -87,13 +87,12 @@ namespace Growkit_website.ServerScripts.Generators
                 id = _longIdWheel++;
             }
 
-            byte[] randomBytes = new byte[2];
+            byte[] randomBytes = new byte[1];
             NextBytes(randomBytes);
 
-            id |= (long)randomBytes[0] << 16;
-            id |= (long)randomBytes[0] << 24;
+            id |= (long)(randomBytes[0] & 0b1111) << 16;
 
-            id = ((DateTime.UtcNow - _epoch).Ticks / TimeSpan.TicksPerMillisecond) << 32;
+            id |= ((DateTime.UtcNow - _epoch).Ticks / TimeSpan.TicksPerMillisecond) << 20;
 
             return (ulong)id;
         }
