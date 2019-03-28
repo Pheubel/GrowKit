@@ -11,6 +11,41 @@
 #define HOST "192.168.0.105"
 #define ID "1:"
 
+//First RGB LED test, GPIO B25, R26, G32
+
+//LIGHT LED
+#define redLED 32
+#define greenLED 26
+#define blueLED 25
+
+#define LEDCHANNEL 0
+#define LEDCHANNEL1 1
+#define LEDCHANNEL2 2
+
+//TEMPERATURE LED
+#define redLED1 14
+#define greenLED1 27
+#define blueLED1 33
+
+#define LEDCHANNEL3 3
+#define LEDCHANNEL4 4
+#define LEDCHANNEL5 5
+
+//MOISTURE LED
+#define redLED2 2
+#define greenLED2 13
+#define blueLED2 15
+
+//BATTERy LED
+#define BATLED 0
+
+#define LEDCHANNEL6 6
+#define LEDCHANNEL7 7
+#define LEDCHANNEL8 8
+
+#define LEDFREQ 5000
+#define LEDRES 8
+
 WiFiClient client;
 WiFiServer wifiServer(10000);
 
@@ -30,6 +65,7 @@ void setup()
 {
   Wire.begin();
   Serial.begin(9600);
+  pinMode(BATLED, OUTPUT);
 
   sensor.begin(); // reset sensor
   delay(1000); // give some time to boot up
@@ -50,6 +86,7 @@ void setup()
 
 String startSensors()
 {
+  int data[2];
   sensor.begin();
   delay(5000);
   sensor.startMeasureLight();
@@ -79,11 +116,9 @@ String startSensors()
   if (temperature > 100)
     temperature = 100;
 
-  String moistureStr = String(moisture, DEC);
-  String temperatureStr = String(temperature, DEC);
-  String lightStr = String(light, DEC);
-
-
+  String moistureStr = String(data[1], DEC);
+  String temperatureStr = String(data[2], DEC);
+  String lightStr = String(data[3], DEC);
 
   Serial.println(ID + moistureStr + ":" + lightStr + ":" + temperatureStr);
   return (ID + moistureStr + ":" + lightStr + ":" + temperatureStr);
@@ -142,10 +177,95 @@ void sendData(String dataPacket)
   }
 }
 
+// Check if the 3 parameters exceed acceptable values
+void checkStatus(String dataPacket)
+{
+  Serial.print("Checking data status!");
+}
+
+//Set the parameters depending on what kind of plant. Data received from Hub
+void setParameters(int lightMin, int lightMax, int moistureMin, int moistureMax, int temperatureMin, int temperatureMax, int moistureTime)
+{
+  
+}
+//Pulse the LEDs
+void ledPulse(int r, int g, int b, int id)
+{
+  int LED;
+  int LED1;
+  int LED2;
+
+  if (id == 1)
+  {
+    LED = LEDCHANNEL;
+    LED1 = LEDCHANNEL1;
+    LED2 = LEDCHANNEL2;
+  }
+
+  else if (id == 2)
+  {
+    LED = LEDCHANNEL3;
+    LED1 = LEDCHANNEL4;
+    LED2 = LEDCHANNEL5;
+  }
+
+  else
+  {
+    LED = LEDCHANNEL6;
+    LED1 = LEDCHANNEL7;
+    LED2 = LEDCHANNEL8;
+  }
+
+  for (float fade = 1.0; fade >= 0.0; fade -= 0.002)
+  {
+    ledcWrite(LED, (float) r * fade);
+    ledcWrite(LED1, (float) g * fade);
+    ledcWrite(LED2, (float) b * fade);
+    delay(10);
+  }
+}
+
+//Set the PWM settings for the RGB LEDs
+void ledSetup()
+{
+  //LIGHT
+  ledcSetup(LEDCHANNEL, LEDFREQ, LEDRES);
+  ledcSetup(LEDCHANNEL1, LEDFREQ, LEDRES);
+  ledcSetup(LEDCHANNEL2, LEDFREQ, LEDRES);
+
+  ledcAttachPin(redLED, LEDCHANNEL);
+  ledcAttachPin(greenLED, LEDCHANNEL1);
+  ledcAttachPin(blueLED, LEDCHANNEL2);
+
+  //TEMPERATURE
+
+  ledcSetup(LEDCHANNEL3, LEDFREQ, LEDRES);
+  ledcSetup(LEDCHANNEL4, LEDFREQ, LEDRES);
+  ledcSetup(LEDCHANNEL5, LEDFREQ, LEDRES);
+
+  ledcAttachPin(redLED1, LEDCHANNEL3);
+  ledcAttachPin(greenLED1, LEDCHANNEL4);
+  ledcAttachPin(blueLED1, LEDCHANNEL5);
+
+  //MOISTURE
+
+  ledcSetup(LEDCHANNEL6, LEDFREQ, LEDRES);
+  ledcSetup(LEDCHANNEL7, LEDFREQ, LEDRES);
+  ledcSetup(LEDCHANNEL8, LEDFREQ, LEDRES);
+
+  ledcAttachPin(redLED2, LEDCHANNEL6);
+  ledcAttachPin(greenLED2, LEDCHANNEL7);
+  ledcAttachPin(blueLED2, LEDCHANNEL8);
+
+
+}
 
 void loop()
 {
+  ledSetup();
+  digitalWrite(BATLED, HIGH);
   dataPacket = startSensors();
-  if (connectWiFi())
-    sendData(dataPacket);
+  checkStatus(dataPacket);
+//  if (connectWiFi())
+//    sendData(dataPacket);
 }
