@@ -1,3 +1,4 @@
+
 String startSensors()
 {
   Serial.println("<<<<<< STARTING SENSORS >>>>>>");
@@ -15,18 +16,18 @@ String startSensors()
   Serial.println();
   sensor.sleep();
 
-//  moisture = map(moisture, 200, 722, 0, 100);
-//  temperature = map(temperature, 255, 305, 0, 100);
-//  light = map(light, 10000, 0, 0, 100);
-//
-//  Serial.println("Mapped -");
-//  Serial.print("Temperature: ");
-//  Serial.println(temperature / CELSIUSOFFSET);
-//  Serial.print("Moisture: ");
-//  Serial.println(moisture);
-//  Serial.print("Light: ");
-//  Serial.println(light);
-//  Serial.println();
+  //  moisture = map(moisture, 200, 722, 0, 100);
+  //  temperature = map(temperature, 255, 305, 0, 100);
+  //  light = map(light, 10000, 0, 0, 100);
+  //
+  //  Serial.println("Mapped -");
+  //  Serial.print("Temperature: ");
+  //  Serial.println(temperature / CELSIUSOFFSET);
+  //  Serial.print("Moisture: ");
+  //  Serial.println(moisture);
+  //  Serial.print("Light: ");
+  //  Serial.println(light);
+  //  Serial.println();
 
   if ( moisture < 0)
     moisture = 0;
@@ -58,8 +59,7 @@ void checkStatus()
 
   if (moisture < moistureMin)
   {
-    ledActivation(139, 69, 19, 2, PULSE);
-
+    leds[1] = moistLED.blinkLED();
     Serial.print("Moisture: ");
     Serial.print(moisture);
     Serial.print(" < ");
@@ -68,40 +68,50 @@ void checkStatus()
   }
   if (moisture > moistureMax)
   {
-    ledActivation(0, 0, 255, 2, PULSE);
-
+    leds[1] = moistLED.pulseLED();
     Serial.print("Moisture: ");
     Serial.print(moisture);
     Serial.print(" > ");
     Serial.println(moistureMax);
     Serial.println("TOO MOIST");
   }
+  if (moisture >= moistureMin && moisture <= moistureMax)
+  {
+    leds[1] = moistLED.offLED();
+    Serial.print("Moisture: ");
+    Serial.println(moisture);
+    Serial.println("Good");
+  }
 
   if (light > lightMin)
   {
-    ledActivation(0, 100, 100, 1, PULSE);
-
+    leds[2] = lightLED.pulseLED();
     Serial.print("Light: ");
     Serial.print(light);
     Serial.print(" <");
     Serial.println(lightMin);
-    Serial.println("TOO DARK");
+    Serial.println("TOO LIGHT");
   }
   if (light < lightMax)
   {
-    ledActivation(0, 255, 255, 1, PULSE);
-
+    leds[2] = lightLED.blinkLED;
     Serial.print("Light: ");
     Serial.print(light);
     Serial.print(" > ");
     Serial.println(lightMax);
-    Serial.println("TOO LIGHT");
+    Serial.println("TOO DARK");
+  }
+  if (light >= lightMin && light <= moistureMax)
+  {
+    leds[2] = lightLED.offLED;
+    Serial.print("Light: ");
+    Serial.println(light);
+    Serial.println("Good");
   }
 
   if ((temperature) < tempMin)
   {
-    ledActivation(0, 0, 200, 3, PULSE);
-
+    leds[0] = tempLED.pulseLED();
     Serial.print("Temperature: ");
     //Divide by 10 to make sure the value is in normal Celsius range
     Serial.print(temperature);
@@ -111,14 +121,19 @@ void checkStatus()
   }
   if ((temperature) > tempMax)
   {
-    ledActivation(200, 0, 0, 3, PULSE);
-
+    leds[0] = tempLED.blinkLED();
     Serial.print("Temperature: ");
     Serial.print(temperature);
     Serial.print(" > ");
     Serial.println(tempMax);
     Serial.println("TOO HOT");
-
+  }
+  if (temperature >= tempMin && temperature <= tempMax)
+  {
+    leds[0] = tempLED.offLED();
+    Serial.print("Temperature: ");
+    Serial.print(temperature);
+    Serial.println("Good");
   }
 
 }

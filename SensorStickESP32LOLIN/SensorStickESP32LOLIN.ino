@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <I2CSoilMoistureSensor.h>
 #include <WiFi.h>
+#include <FastLED.h>
 #include <ArduinoJson.h>
 
 #include <BLEDevice.h>
@@ -17,6 +18,9 @@
 #define HOST "192.168.0.105"
 #define ID "1:"
 
+#define NUM_LEDS 3
+#define LEDPIN 4
+
 WiFiClient client;
 WiFiServer wifiServer(10000);
 
@@ -28,21 +32,38 @@ int temperature;
 int identifier;
 int counter = 0;
 
+unsigned long previousMillis = 0;
+unsigned long currentMillis;
+const long interval = 1000;
+
 bool BLEServer;
 
 String dataPacket;
 
-enum ledStates
+CRGB lightCol(150,150,0);
+CRGB moistCol(0,50,150);
+CRGB tempCol(150,0,0);
+
+LED lightLED(lightCol);
+LED moistLED(moistCol);
+LED tempLED(tempCol);
+
+CRGB leds[NUM_LEDS];
+
+void LEDSetup()
 {
-  BLINK,
-  PULSE,
-  PULSE_ALL,
-  ON,
+  FastLED.addLeds<NEOPIXEL, LEDPIN>(leds, NUM_LEDS);
+}
+
+enum LEDStates
+{
   OFF,
-  TEST
+  ON,
+  BLINK,
+  PULSE
 };
 
-enum ledStates ledState;
+enum LEDStates LEDState;
 
 
 I2CSoilMoistureSensor sensor;
@@ -52,7 +73,7 @@ void setup()
   Wire.begin(15, 2);
   Serial.begin(115200);
   //pinMode(BATLED, OUTPUT);
-  ledSetup();
+  FastLED.addLeds<NEOPIXEL, DATAPIN>(leds, NUM_LEDS);
 
   sensor.begin(); // reset sensor
   delay(1000); // give some time to boot up
@@ -93,7 +114,6 @@ bool connectWiFi()
     counter++;
     if (counter >= 60)
     {
-      ledActivation(255, 0, 0, 1, BLINK);
       ESP.restart();
       return false;
     }
@@ -130,11 +150,21 @@ void sendData(String dataPacket)
 
 void loop()
 {
-  dataPacket = startSensors();
-  checkStatus();
-
+  currentMillis = millis();
+//  dataPacket = startSensors();
+//  checkStatus();
+  //LEDTest();
+  
   //if (connectWiFi())
   //  sendData(dataPacket);
+  if(currentMillis - previousMillis >= interval)
+  {
+    
+    previousMillis = currentMillis;
+    FastLED.show();
+  }
+  
+  
   Serial.println("<<<<<< DATA PACKET >>>>>>");  
   Serial.println(dataPacket);
 }
