@@ -2,17 +2,15 @@
 String startSensors()
 {
   Serial.println("<<<<<< STARTING SENSORS >>>>>>");
-  int data[2];
   sensor.begin();
-  delay(1000);
-  sensor.startMeasureLight();
-  delay(1000);
+  delay(2000);
+  int data[2];
   Serial.print("Temperature: ");
   Serial.println(temperature = sensor.getTemperature() / CELSIUSOFFSET);
   Serial.print("Moisture: ");
   Serial.println(moisture = sensor.getCapacitance());
   Serial.print("Light: ");
-  Serial.println(light = sensor.getLight());
+  Serial.println(light = analogRead(27));
   Serial.println();
   sensor.sleep();
 
@@ -29,6 +27,7 @@ String startSensors()
   //  Serial.println(light);
   //  Serial.println();
 
+//Clamp values to keep value size restricted
   if ( moisture < 0)
     moisture = 0;
 
@@ -56,7 +55,8 @@ String startSensors()
 void checkStatus()
 {
   Serial.println("<<<<<< CHECKING STATUS >>>>>>");
-
+  
+  Serial.println(light);
   if (moisture < moistureMin)
   {
     leds[1] = moistLED.blinkLED();
@@ -82,8 +82,9 @@ void checkStatus()
     Serial.println(moisture);
     Serial.println("Good");
   }
+// Light is flipped because Dark = higher number, light = lower number
 
-  if (light > lightMin)
+  if (light < lightMin)
   {
     leds[2] = lightLED.pulseLED();
     Serial.print("Light: ");
@@ -92,9 +93,9 @@ void checkStatus()
     Serial.println(lightMin);
     Serial.println("TOO LIGHT");
   }
-  if (light < lightMax)
+  if (light > lightMax)
   {
-    leds[2] = lightLED.blinkLED;
+    leds[2] = lightLED.blinkLED();
     Serial.print("Light: ");
     Serial.print(light);
     Serial.print(" > ");
@@ -103,7 +104,7 @@ void checkStatus()
   }
   if (light >= lightMin && light <= moistureMax)
   {
-    leds[2] = lightLED.offLED;
+    leds[2] = lightLED.offLED();
     Serial.print("Light: ");
     Serial.println(light);
     Serial.println("Good");

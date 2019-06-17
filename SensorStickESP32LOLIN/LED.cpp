@@ -1,54 +1,48 @@
-#include <LED.h>
+#include "LED.h"
 
-class LED
-{
-private:
-	CRGB startColour;
-	CRGB newColour;
-	float fade = 1.0f;
-	bool ledOff;
-	bool bounce;
-
-public:
-	LED(CRGB startColour)
+	LED::LED(CRGB startColour)
 	{
 		this->startColour = startColour;
 		newColour = startColour;
+    off = CRGB(0,0,0);
 	}
 
 
-	CRGB blinkLED()
+	CRGB LED::blinkLED()
 	{
-		if (!ledOff)
+		if (LEDOn)
 		{
-			offLED();
+      Serial.println("BLINK LED, OFF");
+      LEDOn = false;
+			return off;
 		}
 		else
 		{
+      Serial.println("BLINK LED!");
+      LEDOn = true;
 			return startColour;
 		}
 	}
 
-	CRGB pulseLED()
+	CRGB LED::pulseLED()
 	{
-		CRGB thisColour(newColour.r * fade, newColour.g * fade, newColour.b * fade);
+		CRGB thisColour((int)newColour.r * fade, (int)newColour.g * fade, (int)newColour.b * fade);
+    
 		if (!bounce)
-			fade -= 0.05f;
+			fade -= 0.15f;
 		if (bounce)
-			fade += 0.05f;
+			fade += 0.15f;
 
-		if (fade = 0.0f)
+		if (fade <= 0.0f)
 			bounce = true;
-		if (fade = 1.0f)
+		if (fade >= 1.0f)
 			bounce = false;
 
 		return thisColour;
 	}
 
-	CRGB offLED()
+	CRGB LED::offLED()
 	{
-		CRGB thisColour(ZERO, ZERO, ZERO);
-		ledOff = true;
-		return thisColour;
+    Serial.println("LED OFF!");
+		return off;
 	}
-};

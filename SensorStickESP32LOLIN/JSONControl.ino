@@ -3,10 +3,10 @@ char chamomileDebugProfile[] = "{\"Type\":\"profile\":\"plantID\":1,\"Light\":10
 
 //plantprofile
 int plantID;
-int lightMin = 4500;
-int lightMax = 300;
+int lightMin = 700;
+int lightMax = 7000;
 int tempMin = 15;
-int tempMax = 25;
+int tempMax = 28;
 int suntimeMin = 6;
 int suntimeMax = 8;
 int moistureMin = 250;
@@ -30,6 +30,7 @@ bool decodeJson()
   }
 
 }
+
 
 void extractJson()
 {

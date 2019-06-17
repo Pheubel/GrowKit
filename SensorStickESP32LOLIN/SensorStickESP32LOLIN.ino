@@ -3,6 +3,7 @@
 #include <WiFi.h>
 #include <FastLED.h>
 #include <ArduinoJson.h>
+#include "LED.h"
 
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -12,12 +13,14 @@
 #define ZERO 0
 #define CELSIUSOFFSET 10
 
+//WiFi settings
 #define SETSSID "DSS_2"
 #define PW "DSSwifi020!"
 #define PORT 10000
 #define HOST "192.168.0.105"
 #define ID "1:"
 
+//LED settings
 #define NUM_LEDS 3
 #define LEDPIN 4
 
@@ -32,17 +35,22 @@ int temperature;
 int identifier;
 int counter = 0;
 
-unsigned long previousMillis = 0;
-unsigned long currentMillis;
-const long interval = 1000;
+//Delay variables
+unsigned long p_LEDMillis = 0;
+unsigned long p_sensorMillis;
+unsigned long LEDMillis;
+unsigned long sensorMillis;
+const long LEDInterval = 500;
+const long sensorInterval = 1000;
 
 bool BLEServer;
 
 String dataPacket;
 
-CRGB lightCol(150,150,0);
-CRGB moistCol(0,50,150);
-CRGB tempCol(150,0,0);
+//LED Colours
+CRGB lightCol(100, 100, 0);
+CRGB moistCol(0, 50, 100);
+CRGB tempCol(100, 0, 0);
 
 LED lightLED(lightCol);
 LED moistLED(moistCol);
@@ -73,7 +81,7 @@ void setup()
   Wire.begin(15, 2);
   Serial.begin(115200);
   //pinMode(BATLED, OUTPUT);
-  FastLED.addLeds<NEOPIXEL, DATAPIN>(leds, NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, LEDPIN>(leds, NUM_LEDS);
 
   sensor.begin(); // reset sensor
   delay(1000); // give some time to boot up
@@ -150,21 +158,37 @@ void sendData(String dataPacket)
 
 void loop()
 {
-  currentMillis = millis();
-//  dataPacket = startSensors();
-//  checkStatus();
+  sensorMillis = millis();
+  LEDMillis = millis();
+
+
   //LEDTest();
-  
+
   //if (connectWiFi())
   //  sendData(dataPacket);
-  if(currentMillis - previousMillis >= interval)
+  if (sensorMillis - p_sensorMillis >= sensorInterval)
   {
-    
-    previousMillis = currentMillis;
+    p_sensorMillis = sensorMillis;
+    startSensors();
+    checkStatus();
+  }
+  if (LEDMillis - p_LEDMillis >= LEDInterval)
+  {
+    p_LEDMillis = LEDMillis;
+    Serial.println("LEDS: ");
+    Serial.print("Light: ");
+    Serial.print(leds[0].r);
+    Serial.print(leds[0].g);
+    Serial.println(leds[0].b);
+    Serial.print("Moisture: ");
+    Serial.print(leds[1].r);
+    Serial.print(leds[1].g);
+    Serial.println(leds[1].b);
+    Serial.print("Temperature: ");
+    Serial.print(leds[2].r);
+    Serial.print(leds[2].g);
+    Serial.println(leds[2].b);
     FastLED.show();
   }
   
-  
-  Serial.println("<<<<<< DATA PACKET >>>>>>");  
-  Serial.println(dataPacket);
 }
