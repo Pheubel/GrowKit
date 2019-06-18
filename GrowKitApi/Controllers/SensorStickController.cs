@@ -16,9 +16,10 @@ namespace GrowKitApi.Controllers
         private readonly ApplicationContext _applicationContext;
         private readonly UserManagementService _userManagementService;
 
-        public SensorStickController(ApplicationContext applicationContext)
+        public SensorStickController(ApplicationContext applicationContext, UserManagementService userManagementService)
         {
             _applicationContext = applicationContext;
+            _userManagementService = userManagementService;
         }
 
         [HttpPut("UpdateStick")]
