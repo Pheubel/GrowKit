@@ -79,7 +79,7 @@ namespace GrowKitApi.Controllers
             return Ok(sticks);
         }
 
-        [HttpGet("stickId}")]
+        [HttpGet("{stickId}")]
         //[Authorize]
         public async Task<IActionResult> GetStick(long stickId)
         {
