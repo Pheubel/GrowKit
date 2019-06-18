@@ -516,6 +516,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-
+Mobile_growkit_app/*
+!Mobile_growkit_app/Assets/
 
 Growkit website/appsettings.json
