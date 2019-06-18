@@ -3,8 +3,8 @@ char chamomileDebugProfile[] = "{\"Type\":\"profile\":\"plantID\":1,\"Light\":10
 
 //plantprofile
 int plantID;
-int lightMin = 9000;
-int lightMax = 4000;
+int lightMin = 200;
+int lightMax = 1500;
 int tempMin = 20;
 int tempMax = 30;
 int suntimeMin = 6;

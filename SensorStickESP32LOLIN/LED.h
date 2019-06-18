@@ -20,7 +20,7 @@ private:
 public:
 	LED(CRGB startColour);
 
-	CRGB blinkLED();
+	CRGB onLED();
 	CRGB pulseLED();
 	CRGB offLED();
 };

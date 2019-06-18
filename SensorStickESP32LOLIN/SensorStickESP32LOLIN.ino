@@ -29,6 +29,7 @@ WiFiClient client;
 WiFiServer wifiServer(10000);
 
 bool profileLoaded = false;
+bool blinkPhase = false;
 
 int light;
 int moisture;
@@ -64,24 +65,12 @@ void LEDSetup()
   FastLED.addLeds<NEOPIXEL, LEDPIN>(leds, NUM_LEDS);
 }
 
-enum LEDStates
-{
-  OFF,
-  ON,
-  BLINK,
-  PULSE
-};
-
-enum LEDStates LEDState;
-
-
 I2CSoilMoistureSensor sensor;
 
 void setup()
 {
   Wire.begin(15, 2);
   Serial.begin(115200);
-  //pinMode(BATLED, OUTPUT);
   FastLED.addLeds<NEOPIXEL, LEDPIN>(leds, NUM_LEDS);
 
   sensor.begin(); // reset sensor
@@ -151,12 +140,12 @@ void sendData(String dataPacket)
   {
     Serial.println("Connection to web server");
   }
-  else if(client.connect(HOST, PORT))
+  else if (client.connect(HOST, PORT))
   {
     delay(500);
     Serial.println("Connected to webserver! Sending data..");
     client.print(HTTPPOST);
-    
+
     //client.print();
     Serial.println("Data sent, disconnecting!");
     client.stop();
@@ -183,6 +172,11 @@ void loop()
   {
     p_LEDMillis = LEDMillis;
     FastLED.show();
+
+    if (blinkPhase)
+      blinkPhase = false;
+    else
+      blinkPhase = true;
   }
-  
+
 }

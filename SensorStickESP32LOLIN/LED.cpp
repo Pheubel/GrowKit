@@ -8,18 +8,10 @@
 	}
 
 
-	CRGB LED::blinkLED()
+	CRGB LED::onLED()
 	{
-		if (LEDOn)
-		{
-      LEDOn = false;
-			return off;
-		}
-		else
-		{
       LEDOn = true;
 			return startColour;
-		}
 	}
 
 	CRGB LED::pulseLED()

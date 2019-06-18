@@ -3,7 +3,7 @@ String startSensors()
 {
   Serial.println("<<<<<< STARTING SENSORS >>>>>>");
   sensor.begin();
-  
+
   delay(1000);
   sensor.startMeasureLight();
   delay(3000);
@@ -22,15 +22,15 @@ String startSensors()
   //  light = map(light, 10000, 0, 0, 100);
   //
   //  Serial.println("Mapped -");
-    Serial.print("Temperature: ");
-    Serial.println(temperature / CELSIUSOFFSET);
-    Serial.print("Moisture: ");
-    Serial.println(moisture);
-    Serial.print("Light: ");
-    Serial.println(light);
-    Serial.println();
+  Serial.print("Temperature: ");
+  Serial.println(temperature / CELSIUSOFFSET);
+  Serial.print("Moisture: ");
+  Serial.println(moisture);
+  Serial.print("Light: ");
+  Serial.println(light);
+  Serial.println();
 
-//Clamp values to keep value size restricted
+  //Clamp values to keep value size restricted
   if ( moisture < 0)
     moisture = 0;
 
@@ -43,8 +43,8 @@ String startSensors()
   if (temperature > 100)
     temperature = 100;
 
-//  Serial.println(ID + moisture + ":" + light + ":" + temperature);
-//  return (ID + moisture + ":" + light + ":" + temperature);
+  //  Serial.println(ID + moisture + ":" + light + ":" + temperature);
+  //  return (ID + moisture + ":" + light + ":" + temperature);
 }
 
 
@@ -54,11 +54,15 @@ String startSensors()
 void checkStatus()
 {
   Serial.println("<<<<<< CHECKING STATUS >>>>>>");
-  
+
   Serial.println(light);
   if (moisture < moistureMin)
   {
-    leds[1] = moistLED.blinkLED();
+    if (blinkPhase)
+      leds[1] = moistLED.onLED();
+    else
+      leds[1] = moistLED.offLED();
+
     Serial.print("Moisture: ");
     Serial.print(moisture);
     Serial.print(" < ");
@@ -81,7 +85,7 @@ void checkStatus()
     Serial.println(moisture);
     Serial.println("Good");
   }
-// Light is flipped because Dark = higher number, light = lower number
+  // Light is flipped because Dark = higher number, light = lower number
 
   if (light < lightMax)
   {
@@ -94,7 +98,10 @@ void checkStatus()
   }
   if (light > lightMin)
   {
-    leds[2] = lightLED.blinkLED();
+    if (blinkPhase)
+      leds[2] = lightLED.onLED();
+    else
+      leds[2] = lightLED.offLED();
     Serial.print("Light: ");
     Serial.print(light);
     Serial.print(" > ");
@@ -121,7 +128,11 @@ void checkStatus()
   }
   if ((temperature) > tempMax)
   {
-    leds[0] = tempLED.blinkLED();
+    if (blinkPhase)
+      leds[0] = tempLED.onLED();
+    else
+      leds[0] = tempLED.offLED();
+
     Serial.print("Temperature: ");
     Serial.print(temperature);
     Serial.print(" > ");
