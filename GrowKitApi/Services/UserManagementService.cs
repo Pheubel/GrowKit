@@ -6,22 +6,24 @@ using GrowKitApi.Services.Structs;
 using Microsoft.EntityFrameworkCore;
 using OtpNet;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GrowKitApi.Services
 {
     public class UserManagementService : IUserManagementService
     {
-        private IdentityContext _context;
+        private AuthenticationContext _context;
 
-        public UserManagementService(IdentityContext context)
+        public UserManagementService(AuthenticationContext context)
         {
             _context = context;
         }
 
-        public async Task<IdentityUser> FindUserById(ulong id) => await _context.Users.FindAsync(id);
-        public async Task<IdentityUser> FindUserByEmail(string email) => await _context.Users.AsTracking().FirstOrDefaultAsync(u => u.NormalizedEmailAdress.Equals(email, StringComparison.OrdinalIgnoreCase));
+        public async Task<AuthenticationUser> FindUserById(ulong id) => await _context.Users.FindAsync(id);
+        public async Task<AuthenticationUser> FindUserByEmail(string email) => await _context.Users.AsTracking().FirstOrDefaultAsync(u => u.NormalizedEmailAdress.Equals(email, StringComparison.OrdinalIgnoreCase));
 
         public async Task<UserResult> ValidateUserAsync(string emailAdress, string password)
         {
@@ -46,7 +48,7 @@ namespace GrowKitApi.Services
 
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            var user = new IdentityUser(emailAdress)
+            var user = new AuthenticationUser(emailAdress)
             {
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt
@@ -126,6 +128,10 @@ namespace GrowKitApi.Services
             return token.ToString();
         }
 
+        public long GetUserID(ClaimsPrincipal cp)
+        {
+            return long.Parse(cp.FindFirstValue(JwtRegisteredClaimNames.Sub));
+        }
         private class AuthenticationInfo
         {
             public long Id { get; set; }

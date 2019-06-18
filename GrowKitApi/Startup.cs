@@ -37,7 +37,7 @@ namespace GrowKitApi
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IEmailService, EmailService>();
 
-            services.AddDbContext<IdentityContext>(options =>
+            services.AddDbContext<AuthenticationContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("AuthenticationDbString"));
             });

@@ -1,5 +1,6 @@
 ﻿using GrowKitApi.Services.Enums;
 using GrowKitApi.Services.Structs;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GrowKitApi.Services
@@ -10,5 +11,7 @@ namespace GrowKitApi.Services
         Task<Results> ValidateAuthenticationCodeAsync(string code, long userId);
         Task<UserResult> CreateAsync(string emailAdress, string password);
         Task<string> GenerateEmailConfiramtionTokenAsync(long userId);
+
+        long GetUserID(ClaimsPrincipal cp);
     }
 }
