@@ -12,13 +12,11 @@
 	{
 		if (LEDOn)
 		{
-      Serial.println("BLINK LED, OFF");
       LEDOn = false;
 			return off;
 		}
 		else
 		{
-      Serial.println("BLINK LED!");
       LEDOn = true;
 			return startColour;
 		}
@@ -43,6 +41,5 @@
 
 	CRGB LED::offLED()
 	{
-    Serial.println("LED OFF!");
 		return off;
 	}

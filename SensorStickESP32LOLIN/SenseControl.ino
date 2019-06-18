@@ -3,14 +3,17 @@ String startSensors()
 {
   Serial.println("<<<<<< STARTING SENSORS >>>>>>");
   sensor.begin();
-  delay(2000);
+  
+  delay(1000);
+  sensor.startMeasureLight();
+  delay(3000);
   int data[2];
   Serial.print("Temperature: ");
   Serial.println(temperature = sensor.getTemperature() / CELSIUSOFFSET);
   Serial.print("Moisture: ");
   Serial.println(moisture = sensor.getCapacitance());
   Serial.print("Light: ");
-  Serial.println(light = analogRead(27));
+  Serial.println(light = sensor.getLight());
   Serial.println();
   sensor.sleep();
 
@@ -19,13 +22,13 @@ String startSensors()
   //  light = map(light, 10000, 0, 0, 100);
   //
   //  Serial.println("Mapped -");
-  //  Serial.print("Temperature: ");
-  //  Serial.println(temperature / CELSIUSOFFSET);
-  //  Serial.print("Moisture: ");
-  //  Serial.println(moisture);
-  //  Serial.print("Light: ");
-  //  Serial.println(light);
-  //  Serial.println();
+    Serial.print("Temperature: ");
+    Serial.println(temperature / CELSIUSOFFSET);
+    Serial.print("Moisture: ");
+    Serial.println(moisture);
+    Serial.print("Light: ");
+    Serial.println(light);
+    Serial.println();
 
 //Clamp values to keep value size restricted
   if ( moisture < 0)
@@ -40,12 +43,8 @@ String startSensors()
   if (temperature > 100)
     temperature = 100;
 
-  String moistureStr = String(data[1], DEC);
-  String temperatureStr = String(data[2], DEC);
-  String lightStr = String(data[3], DEC);
-
-  Serial.println(ID + moistureStr + ":" + lightStr + ":" + temperatureStr);
-  return (ID + moistureStr + ":" + lightStr + ":" + temperatureStr);
+//  Serial.println(ID + moisture + ":" + light + ":" + temperature);
+//  return (ID + moisture + ":" + light + ":" + temperature);
 }
 
 
@@ -84,7 +83,7 @@ void checkStatus()
   }
 // Light is flipped because Dark = higher number, light = lower number
 
-  if (light < lightMin)
+  if (light < lightMax)
   {
     leds[2] = lightLED.pulseLED();
     Serial.print("Light: ");
@@ -93,7 +92,7 @@ void checkStatus()
     Serial.println(lightMin);
     Serial.println("TOO LIGHT");
   }
-  if (light > lightMax)
+  if (light > lightMin)
   {
     leds[2] = lightLED.blinkLED();
     Serial.print("Light: ");

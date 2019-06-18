@@ -16,9 +16,10 @@
 //WiFi settings
 #define SETSSID "DSS_2"
 #define PW "DSSwifi020!"
-#define PORT 10000
-#define HOST "192.168.0.105"
+#define PORT 5000
+#define HOST "https://vps29.dss.cloud"
 #define ID "1:"
+#define HTTPPOST "http://vps29.dss.cloud/api/UpdateStick"
 
 //LED settings
 #define NUM_LEDS 3
@@ -98,7 +99,6 @@ void setup()
     Serial.println("... DONE");
   else
     Serial.println("... ERROR");
-
   Serial.println("<<<<<< SETUP DONE >>>>>>");
 }
 
@@ -138,19 +138,26 @@ bool connectWiFi()
   return true;
 }
 
+void connectServer()
+{
+
+}
+
 void sendData(String dataPacket)
 {
   WiFiClient client = wifiServer.available();
 
   if (!client.connect(HOST, PORT))
   {
-    Serial.println("Connection to HUB failed");
+    Serial.println("Connection to web server");
   }
-  else
+  else if(client.connect(HOST, PORT))
   {
     delay(500);
-    Serial.println("Connected to HUB! Sending data..");
-    client.print(dataPacket);
+    Serial.println("Connected to webserver! Sending data..");
+    client.print(HTTPPOST);
+    
+    //client.print();
     Serial.println("Data sent, disconnecting!");
     client.stop();
   }
@@ -175,19 +182,6 @@ void loop()
   if (LEDMillis - p_LEDMillis >= LEDInterval)
   {
     p_LEDMillis = LEDMillis;
-    Serial.println("LEDS: ");
-    Serial.print("Light: ");
-    Serial.print(leds[0].r);
-    Serial.print(leds[0].g);
-    Serial.println(leds[0].b);
-    Serial.print("Moisture: ");
-    Serial.print(leds[1].r);
-    Serial.print(leds[1].g);
-    Serial.println(leds[1].b);
-    Serial.print("Temperature: ");
-    Serial.print(leds[2].r);
-    Serial.print(leds[2].g);
-    Serial.println(leds[2].b);
     FastLED.show();
   }
   
