@@ -3,9 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GrowKitApi.Entities
 {
-    public class IdentityUser
+    public class AuthenticationUser
     {
-        public IdentityUser(string email)
+        public AuthenticationUser()
+        {
+        }
+
+        public AuthenticationUser(string email)
         {
             NormalizedEmailAdress = email.ToUpper();
         }

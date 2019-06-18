@@ -12,6 +12,6 @@ namespace GrowKitApi.Entities
         public DateTime ExpirationDate { get; set; }
 
         [ForeignKey("UserId")]
-        public IdentityUser User { get; set; }
+        public AuthenticationUser User { get; set; }
     }
 }

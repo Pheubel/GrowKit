@@ -1,4 +1,5 @@
 ﻿using GrowKitApi.Contexts;
+using GrowKitApi.Services;
 using GrowKitApiDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace GrowKitApi.Controllers
     public class SensorStickController : ControllerBase
     {
         private readonly ApplicationContext _applicationContext;
+        private readonly UserManagementService _userManagementService;
 
         public SensorStickController(ApplicationContext applicationContext)
         {
@@ -56,16 +58,27 @@ namespace GrowKitApi.Controllers
             return NoContent();
         }
 
-        [HttpGet("GetSticks")]
+        [HttpGet("GetSticks/{userId}")]
         //[Authorize]
-        public async Task<IActionResult> GetUserSticks()
+        public async Task<IActionResult> GetUserSticks(long userId)
         {
-            var sticks = await _applicationContext.SensorSticks.Where(s => s.OwnerId == 0).ToListAsync();
+            var sticks = await _applicationContext.SensorSticks.Where(s => s.OwnerId == userId).ToListAsync();
 
             return Ok(sticks);
         }
 
-        [HttpGet("{stickId}")]
+        [HttpGet("GetSticks")]
+        [Authorize]
+        public async Task<IActionResult> GetUserSticks()
+        {
+            long userId = _userManagementService.GetUserID(User);
+
+            var sticks = await _applicationContext.SensorSticks.Where(s => s.OwnerId == userId).ToListAsync();
+
+            return Ok(sticks);
+        }
+
+        [HttpGet("stickId}")]
         //[Authorize]
         public async Task<IActionResult> GetStick(long stickId)
         {

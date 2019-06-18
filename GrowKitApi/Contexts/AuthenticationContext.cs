@@ -3,17 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GrowKitApi.Contexts
 {
-    public class IdentityContext : DbContext
+    public class AuthenticationContext : DbContext
     {
-        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
+        public AuthenticationContext(DbContextOptions<AuthenticationContext> options) : base(options)
         {
         }
 
-        public IdentityContext()
+        public AuthenticationContext()
         {
         }
 
-        public DbSet<IdentityUser> Users { get; set; }
+        public DbSet<AuthenticationUser> Users { get; set; }
         public DbSet<EmailConfirmationRequest> EmailConfirmationRequests { get; internal set; }
     }
 }
