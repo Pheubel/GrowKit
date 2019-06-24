@@ -13,6 +13,9 @@
 #define ZERO 0
 #define CELSIUSOFFSET 10
 
+#define SDAPIN 15
+#define SCLPIN 2
+
 //WiFi settings
 #define SETSSID "DSS_2"
 #define PW "DSSwifi020!"
@@ -45,7 +48,7 @@ unsigned long sensorMillis;
 const long LEDInterval = 500;
 const long sensorInterval = 1000;
 
-bool BLEServer;
+//bool BLEServer;
 
 String dataPacket;
 
@@ -69,7 +72,7 @@ I2CSoilMoistureSensor sensor;
 
 void setup()
 {
-  Wire.begin(15, 2);
+  Wire.begin(SDAPIN, SCLPIN);
   Serial.begin(115200);
   FastLED.addLeds<NEOPIXEL, LEDPIN>(leds, NUM_LEDS);
 
@@ -129,13 +132,7 @@ bool connectWiFi()
 
 void connectServer()
 {
-
-}
-
-void sendData(String dataPacket)
-{
   WiFiClient client = wifiServer.available();
-
   if (!client.connect(HOST, PORT))
   {
     Serial.println("Connection to web server");
@@ -143,13 +140,19 @@ void sendData(String dataPacket)
   else if (client.connect(HOST, PORT))
   {
     delay(500);
-    Serial.println("Connected to webserver! Sending data..");
-    client.print(HTTPPOST);
-
-    //client.print();
-    Serial.println("Data sent, disconnecting!");
-    client.stop();
   }
+  //void sendData(client, startSensor());
+}
+
+void sendData(WiFiClient wifiServer)
+{
+
+  Serial.println("Connected to webserver! Sending data..");
+  client.print(HTTPPOST);
+  //client.print(encodeJSON());
+  Serial.println("Data sent, disconnecting!");
+  client.stop();
+}
 }
 
 void loop()
@@ -157,11 +160,11 @@ void loop()
   sensorMillis = millis();
   LEDMillis = millis();
 
+  if (connectWiFi())
+    connectServer();
 
-  //LEDTest();
+  //Avoid using Delay() too much, it will make the blinking of the LEDs slower.
 
-  //if (connectWiFi())
-  //  sendData(dataPacket);
   if (sensorMillis - p_sensorMillis >= sensorInterval)
   {
     p_sensorMillis = sensorMillis;

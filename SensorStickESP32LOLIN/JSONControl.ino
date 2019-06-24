@@ -1,4 +1,7 @@
-StaticJsonDocument<120> JSONDoc;
+// All of the JSON deserialization and serialization happens here. An example of the JSON Data Transfer Objects is on github for when you want to make a new plant profile. For debugging purposes, we use a
+// Chamomile profile. All the data that gets sent and received are in JSON format to safe space and keep things readable for us humans.
+StaticJsonDocument<120> InJSONdoc;
+StaticJsonDocument<120> OutJSONdoc;
 char chamomileDebugProfile[] = "{\"Type\":\"profile\":\"plantID\":1,\"Light\":1000,\"TemperatureMin\":15,\"TemperatureMax\":25,\"SuntimeMin\":6\"SuntimeMax\":8,\"MoistureMin\":100,\"MoistureMax\":2000}";
 
 //plantprofile
@@ -16,7 +19,7 @@ int moistureMax = 900;
 
 bool decodeJSON()
 {
-  auto error = deserializeJson(JSONDoc, chamomileDebugProfile);
+  auto error = deserializeJson(InJSONdoc, chamomileDebugProfile);
 
   if (error)
   {
@@ -36,7 +39,7 @@ void extractJson()
 {
   decodeJSON();
   Serial.println("<<<<<< JSON DESERIALIZATION >>>>>>");
-  if (JSONDoc["Type"] == "profile")
+  if (InJSONdoc["Type"] == "profile")
   {
     Serial.println("JSON deserializing!");
     
@@ -61,13 +64,24 @@ void extractJson()
     Serial.println(moistureMax);
     profileLoaded = true;
   }
-  else if (JSONDoc["Type"] == "command")
+  else if (InJSONdoc["Type"] == "command")
   {
   }
 }
 
 String encodeJSON()
 {
-
-
+String JSON;
+JsonObject root = OutJSONdoc.to<JsonObject>();
+root["Type"] = "Update";
+root["ID_Stick"] = 0;
+root["ID_Master"] = 0;
+JsonObject message = root.createNestedObject("Message");
+message["Light"] = light;
+message["Moisture"] = moisture;
+message["Temperature"] = temperature;
+message["LightTime"] = 0;
+message["Timestamp"] = 0;
+serializeJson(root, JSON);
+return JSON;
 }

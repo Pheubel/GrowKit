@@ -1,5 +1,7 @@
+//In order to start the sensors, use startSensors(). Surprise! *ahem* Anyway. The values of the sensors are a bit abstract. Check the I2CSoilMoistureSensor library documentation for more information on that
 
-String startSensors()
+//checkStatus() compares the measured values with the values taken from the plant profile. Depending on the results it will show a different LED status.
+void startSensors()
 {
   Serial.println("<<<<<< STARTING SENSORS >>>>>>");
   sensor.begin();
@@ -17,11 +19,6 @@ String startSensors()
   Serial.println();
   sensor.sleep();
 
-  //  moisture = map(moisture, 200, 722, 0, 100);
-  //  temperature = map(temperature, 255, 305, 0, 100);
-  //  light = map(light, 10000, 0, 0, 100);
-  //
-  //  Serial.println("Mapped -");
   Serial.print("Temperature: ");
   Serial.println(temperature / CELSIUSOFFSET);
   Serial.print("Moisture: ");
@@ -42,15 +39,12 @@ String startSensors()
 
   if (temperature > 100)
     temperature = 100;
-
-  //  Serial.println(ID + moisture + ":" + light + ":" + temperature);
-  //  return (ID + moisture + ":" + light + ":" + temperature);
 }
 
 
 
 
-// Check if the 3 parameters exceed acceptable values
+// Check if the 3 parameters exceed acceptable values and triggers the right LED status for the right LED
 void checkStatus()
 {
   Serial.println("<<<<<< CHECKING STATUS >>>>>>");

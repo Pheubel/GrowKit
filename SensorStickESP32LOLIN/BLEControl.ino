@@ -1,3 +1,7 @@
+//Hi! This section is used for the Bluetooth functionalities of the ESP32 chip. The idea is to have a single device that serves as a server and the others connect to it. This server then connects externally to
+//send data to the database. Unfortunately, due to time constraints, we never got around to implementing this! This is some example code that lets you make a server broadcast itself on bluetooth. 
+//The SERVICE_UUID and CHARACTERISTIC_UUID have been generated at https://www.uuidgenerator.net/ and for projects like these they don't really hold any meaning other than being a unique identifier
+
 //#define SERVICE_UUID        "c5fbf89d-c6df-4128-a380-bb89161a130d"
 //#define CHARACTERISTIC_UUID "5ec99e63-8492-4fa1-97bd-188607cf3464"
 //
