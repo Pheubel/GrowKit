@@ -13,7 +13,7 @@ The following libraries are required:
 
 The Arduino IDE doesn't have ESP32 boards included, this needs to be added manually.
 ESP32 boards can be found at this `https://dl.espressif.com/dl/package_esp32_index.json` and needs to be added to the Arduino IDE's preferences
-![Image](https://i.imgur.com/AmjqGzD.png)
+![Image](https://i.imgur.com/997Bp8s.png)
 
 ## Usage Tips
 When you change the pins the SCL and SDA wires of the I2C Soil Moisture Sensor on the ESP32 board, make sure you change `#define SDAPIN` and `#define SCLPIN` values.
