@@ -2,6 +2,7 @@
 
 namespace GrowKitApi.Entities.Enums
 {
+    /// <summary> The flags representing the state the authentication user is in.</summary>
     [Flags]
     public enum IdentityUserFlags : short
     {

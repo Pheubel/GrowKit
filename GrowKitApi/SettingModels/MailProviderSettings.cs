@@ -1,6 +1,6 @@
 ﻿namespace GrowKitApi.SettingModels
 {
-    /// <summary> The settings of mail service.</summary>
+    /// <summary> The settings for configureing a mail service.</summary>
     public class MailProviderSettings
     {
         /// <summary> The email adress of the sender.</summary>

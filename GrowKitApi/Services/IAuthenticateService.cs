@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace GrowKitApi.Services
 {
+    /// <summary> A authentication store that handles common actions related to authentication of users.</summary>
     public interface IAuthenticateService
     {
         /// <summary> Authenticates the user with the given credentials.</summary>

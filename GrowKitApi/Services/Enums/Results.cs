@@ -1,6 +1,7 @@
 ﻿namespace GrowKitApi.Services.Enums
 {
-    public enum Results : byte
+    /// <summary> The result codes for authentication related methods</summary>
+    public enum AuthenticationResults : byte
     {
         UnknownError,
         Succes,

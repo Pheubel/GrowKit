@@ -21,8 +21,4 @@
     <ProjectReference Include="..\GrowKitApiDTO\GrowKitApiDTO.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\Application\" />
-  </ItemGroup>
-
 </Project>

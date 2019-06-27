@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace GrowKitApi.Services
 {
+    /// <summary> A authentication store implementation that handles common actions related to authentication of users.</summary>
     public class AuthenticateService : IAuthenticateService
     {
         private readonly IUserManagementService _userManagementService;
@@ -23,11 +24,14 @@ namespace GrowKitApi.Services
             _tokenSettings = tokenSettings.Value;
         }
 
+        /// <summary> Authenticates the user with the given credentials.</summary>
+        /// <param name="credentials"> The user credentials.</param>
+        /// <returns> Authentication result.</re
         public async Task<AuthenticationResult> AuthenticateAsync(AuthenticationDTO credentials)
         {
             var userValidation = await _userManagementService.ValidateUserAsync(credentials.Email, credentials.Password);
 
-            if (userValidation.Result != Results.Succes)
+            if (userValidation.Result != AuthenticationResults.Succes)
                 return new AuthenticationResult(userValidation.Result);
 
             DateTime now = DateTime.UtcNow;
@@ -55,12 +59,15 @@ namespace GrowKitApi.Services
             return authenticationResult;
         }
 
-
+        /// <summary> Validates the 2fa code given by the user.</summary>
+        /// <param name="code"> The given c.ode.</param>
+        /// <param name="userId"> The user to validate agains.</param>
+        /// <returns> Authentication result</returns>
         public async Task<AuthenticationResult> ValidateAuthenticationCodeAsync(string code, long userId)
         {
             var result = await _userManagementService.ValidateAuthenticationCodeAsync(code, userId);
 
-            if (result != Results.Succes)
+            if (result != AuthenticationResults.Succes)
                 return new AuthenticationResult(result);
 
             DateTime now = DateTime.UtcNow;
