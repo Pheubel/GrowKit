@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GrowKitApi.Migrations.Authentication
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190618120931_InitialAuthentication")]
-    partial class InitialAuthentication
+    [Migration("20190628144422_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

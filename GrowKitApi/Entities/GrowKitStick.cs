@@ -13,6 +13,8 @@ namespace GrowKitApi.Entities
         public long OwnerId { get; set; }
         /// <summary> The id of the stick managing the messaging of this stick.</summary>
         public long MasterStickId { get; set; }
+        /// <summary> The id of current active preset on the stick.</summary>
+        public int? ActivePresetId { get; set; }
         /// <summary> The current value for the light level.</summary>
         public int Light { get; set; }
         /// <summary> The current value for the moisture level.</summary>
@@ -26,6 +28,9 @@ namespace GrowKitApi.Entities
 
         /// <summary> The stick managing the messaging of this stick.</summary>
         [ForeignKey("MasterStickId")] public GrowKitStick MasterStick { get; set; }
+        /// <summary>  The current active preset on the stick.</summary>
+        [ForeignKey("ActivePresetId")]
+        public PlantPreset ActivePreset { get; set; }
         /// <summary> The owner of the stick.</summary>
         [ForeignKey("OwnerId")] public ApplicationUser Owner { get; set; }
     }

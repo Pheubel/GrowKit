@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GrowKitApi.Entities
 {
@@ -12,5 +13,9 @@ namespace GrowKitApi.Entities
         public string Username { get; set; }
         /// <summary> The normalized username used for comparisons.</summary>
         public string NormalizedUsername { get; set; }
+
+        /// <summary> The reference to the authentication user via the Id.</summary>
+        [ForeignKey("UserId")]
+        public AuthenticationUser AuthenticationUser { get; set; }
     }
 }
