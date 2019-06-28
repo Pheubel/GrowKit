@@ -1,7 +1,8 @@
 # Web API
+The API responsible for handling requests from the sensorstick and the mobile application.
 
 ## Basic knowledge
-This web applicatio has been written in C# and functions as API endpoint for devices to readand write information to the underlying database. We have chosen to make use of Postgres as our database provider due to the scalability factor and continues support from it's community. In case you want to change the database provider, you can change it (for example to a microsoft sql database) in the startup class by changing:
+This web application has been written in C# and functions as API endpoint for devices to readand write information to the underlying database. We have chosen to make use of Postgres as our database provider due to the scalability factor and continues support from it's community. In case you want to change the database provider, you can change it (for example to a microsoft sql database) in the startup class by changing:
 ```
 services.AddDbContext<AuthenticationContext>(options =>
 {
