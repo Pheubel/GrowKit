@@ -25,7 +25,7 @@ services.AddDbContext<ApplicationContext>(options =>
 ```
 
 ## Database diagram
-![Diagram]/GitResources/DatabaseDiagram.PNG?token=AFNCXVGHONJJNY7OZQVXENC5CYUC4?raw=true)
+![Diagram](/GitResources/DatabaseDiagram.PNG?token=AFNCXVGHONJJNY7OZQVXENC5CYUC4?raw=true)
 
 ## Setting up
 To make sure the application the application runs on your machine, please install the [.NET core runtime](https://dotnet.microsoft.com/download)
